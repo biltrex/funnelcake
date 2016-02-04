@@ -1,0 +1,38 @@
+<link rel="import" href="../dev/polymer/polymer.html">
+<link rel="import" href="fc-dropzone.html">
+
+<dom-module id="fc-droplist">
+
+    <template>
+        <div class="droplist-list">
+            <div class="droplist-header">Destination Drops</div>
+            <div class="droplist-body">
+                <div class="droplist-content">
+                    <template is="dom-repeat" items="{{zones}}" as="zone">
+                        <fc-dropzone zone="{{zone}}" on-remove-zone="_removeZone"></fc-dropzone>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+            is: "fc-droplist",
+            properties: {
+                zones: Array
+            },
+            _removeZone: function (e) {
+                console.debug("Droplist remove", e.target.zone);
+                console.debug(this.zones);
+
+                var ind = this.zones.indexOf(e.target.zone);
+                if (ind > -1) {
+                    this.splice('zones', ind, 1);
+                }
+            }
+        });
+        /* _removeDropzone: function () { var thisobj = { host: this.zone.host, destination: this.zone.destination }; console.debug(thisobj); this.fire("remove-zone"); }, */
+    </script>
+
+</dom-module>

@@ -1,0 +1,51 @@
+<link rel="import" href="../dev/polymer/polymer.html">
+<link rel="import" href="../dev/paper-button/paper-button.html">
+<link rel="import" href="../dev/paper-input/paper-input.html">
+
+<dom-module id="fc-airport">
+
+    <template>
+        <div>Current airport is {{aircode}}</div>
+        <paper-input id="airCode" label="Airport Code" on-keydown="_checkAdd"></paper-input>
+        <paper-button on-tap="_add">Change Airport</paper-button>
+    </template>
+
+
+
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'fc-airport',
+        aircode: String,
+        airportsRef: {
+            type: Object,
+            notify: true,
+            observer: 'airChange'
+        },
+        attached: function () {
+            this.airportsRef = new Firebase("https://publicdata-airports.firebaseio.com/");
+
+            //this.airportsRef.child("SFO").on("value", delayInfo);
+
+            function delayInfo(snapshot) {
+                var airport = snapshot.val();
+                console.debug("Delay: " + airport.delay + " reason: " + airport.status.reason);
+            }
+        },
+        _checkAdd: function (e) {
+            if (e.keyCode == 13) {
+                this._add();
+            }
+        },
+        _add: function () {
+            this.aircode = this.$.airCode.value;
+        },
+        airChange: function (v) {
+            this.airportsRef.child("SFO").on("value", delayInfo);
+            console.debug(v);
+        }
+
+
+    });
+</script>

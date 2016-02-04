@@ -1,0 +1,132 @@
+<link rel="import" href="../dev/polymer/polymer.html">
+<!--<link rel="import" href="../../bower_components/paper-input/paper-input.html">-->
+
+<dom-module id="fc-item">
+
+    <template>
+
+        <style>
+            :host {
+                flex: 1 1 auto;
+                flex-direction: row;
+                z-index: 10;
+            }
+        </style>
+
+        <div id="shoutbox" class="fcitem fcitem-item">
+            <div class="fcitem-header">
+                <div class="fcitem-user">{{shout.user}}</div>
+                <div class="fcitem-title">{{shout.title}}</div>
+            </div>
+            <div class="fcitem-body">{{shout.body}}</div>
+            <div class="fcitem-footer">
+                <div class="fcitem-source text-right">{{shout.source}}</div>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'fc-item',
+            properties: {
+                shout: Object,
+                timer: {
+                    type: Number,
+                    value: 0,
+                    observer: 'agelook'
+                },
+                age: {
+                    type: Number,
+                    value: 150000
+                },
+                _timerfunc: Object
+            },
+            attached: function () {
+                var elem = this.$.shoutbox;
+                var ref = this;
+
+                console.debug(ref);
+
+                ref._startTimer();
+
+                function dragMove(event) {
+                    var target = event.target,
+                        x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+                        y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+                    target.style.webkitTransition =
+                        target.style.transition =
+                        'translate 0.0s';
+
+                    target.style.webkitTransform =
+                        target.style.transform =
+                        'translate(' + x + 'px, ' + y + 'px) scale(1.25)';
+
+                    target.setAttribute('data-x', x);
+                    target.setAttribute('data-y', y);
+                }
+
+                function dragEnd(event) {
+                    var target = event.target,
+                        x = 0,
+                        y = 0;
+
+                    target.classList.remove('dragsizer');
+
+                    target.setAttribute('data-x', 0);
+                    target.setAttribute('data-y', 0);
+
+                    target.style.webkitTransition =
+                        target.style.transition =
+                        'transform 0.5s';
+
+
+                    target.style.webkitTransform =
+                        target.style.transform =
+                        'translate(' + x + 'px, ' + y + 'px) scale(1.0)';
+                }
+
+                function dragStart(event) {
+                    var target = event.target;
+
+                    target.style.webkitTransition =
+                        target.style.transition =
+                        'transform 0.1s';
+
+                    target.style.webkitTransform =
+                        target.style.transform =
+                        'scale(1.25)';
+
+                }
+
+                interact(this.$.shoutbox)
+                    .draggable({
+                        enabled: true,
+                        inertia: true,
+                        onmove: dragMove,
+                        onend: dragEnd,
+                        onstart: dragStart
+                    });
+
+            },
+
+            _startTimer: function () {
+                var ref = this;
+                var interval = 10;
+
+                ref.timer = ref.age;
+
+                ref._timerfunc = setInterval(function () {
+                    ref.timer = ref.timer - interval;
+                    var opac = ref.timer / ref.age;
+                    ref.$.shoutbox.style.opacity = opac;
+                }, interval);
+            },
+            agelook: function (nv) {
+                if (nv < 0) {
+                    this.fire("remove-item");
+                }
+            }
+        });
+    </script>
+</dom-module>

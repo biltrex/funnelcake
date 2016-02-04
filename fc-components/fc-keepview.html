@@ -1,0 +1,26 @@
+<link rel="import" href="fc-keeplist.html">
+
+<dom-module id="fc-keepview">
+
+    <template>
+        <fc-keeplist keeps="{{keeps}}" on-add-keep="addKeep"></fc-keeplist>
+    </template>
+
+    <script>
+        var fckeepview = Polymer({
+            is: 'fc-keepview',
+            properties: {
+                keeps: Array
+            },
+
+            addKeep: function (e) {
+                console.debug("adding keep", e);
+                this.push('keeps', {
+                    user: e.detail.value.user,
+                    yell: e.detail.value.yell
+                });
+            }
+        });
+    </script>
+
+</dom-module>

@@ -1,0 +1,26 @@
+<link rel="import" href="fc-keeplist.html">
+<link rel="import" href="fc-keepinput.html">
+
+<dom-module id="fc-keepview">
+
+    <template>
+        <fc-savelist keeps="{{keeps}}"></fc-savelist>
+        <fc-keepinput on-add-keep="addKeep"></fc-keepinput>
+    </template>
+
+    <script>
+        var fckeepview = Polymer({
+            is: 'fc-keepview',
+            properties: {
+                keeps: Array
+            },
+            addKeep: function (e) {
+                this.push('keeps', {
+                    user: e.detail.value.user,
+                    yell: e.detail.value.yell
+                });
+            }
+        });
+    </script>
+
+</dom-module>

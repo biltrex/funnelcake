@@ -1,0 +1,108 @@
+<link rel="import" href="../dev/polymer/polymer.html">
+<!--<link rel="import" href="../../bower_components/paper-input/paper-input.html">-->
+
+<dom-module id="fc-keepitem">
+
+    <template>
+
+        <style>
+            :host {
+                flex: 1 1 auto;
+                flex-direction: row;
+                z-index: 10;
+            }
+        </style>
+
+        <div id="keepbox" class="fckeepitem fckeepitem-item">
+            <div class="fckeepitem-header">
+                <div>
+                    {{keep.user}}
+                </div>
+                <paper-icon-button class="remover" icon="delete" on-tap="_removeKeep" title="remove"></paper-icon-button>
+            </div>
+
+            <div class="fckeepitem-body">
+                {{keep.yell}}
+            </div>
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'fc-keepitem',
+            properties: {
+                keep: Object
+            },
+            _removeKeep: function () {
+                this.fire("remove-keep");
+            },
+            attached: function () {
+                
+                var ref = this;
+                var elem = ref.$.keepbox;
+                
+                console.debug(elem);
+
+                function dragMove(event) {
+                    var target = event.target,
+                        x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+                        y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+                    target.style.webkitTransition =
+                        target.style.transition =
+                        'translate 0.0s';
+
+                    target.style.webkitTransform =
+                        target.style.transform =
+                        'translate(' + x + 'px, ' + y + 'px) scale(1.25)';
+
+                    target.setAttribute('data-x', x);
+                    target.setAttribute('data-y', y);
+                }
+
+                function dragEnd(event) {
+                    var target = event.target,
+                        x = 0,
+                        y = 0;
+
+                    target.classList.remove('dragsizer');
+
+                    target.setAttribute('data-x', 0);
+                    target.setAttribute('data-y', 0);
+
+                    target.style.webkitTransition =
+                        target.style.transition =
+                        'transform 0.5s';
+
+
+                    target.style.webkitTransform =
+                        target.style.transform =
+                        'translate(' + x + 'px, ' + y + 'px) scale(1.0)';
+                }
+
+                function dragStart(event) {
+                    var target = event.target;
+                    console.debug(event, event.currentTarget);
+
+                    target.style.webkitTransition =
+                        target.style.transition =
+                        'transform 0.1s';
+
+                    target.style.webkitTransform =
+                        target.style.transform =
+                        'scale(1.25)';
+
+                }
+
+                interact(this.$.shoutbox)
+                    .draggable({
+                        enabled: true,
+                        inertia: true,
+                        onmove: dragMove,
+                        onend: dragEnd,
+                        onstart: dragStart
+                    });
+            }
+        });
+    </script>
+</dom-module>

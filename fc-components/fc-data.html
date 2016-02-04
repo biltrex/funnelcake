@@ -1,0 +1,68 @@
+<link rel="import" href="../dev/polymer/polymer.html">
+<link rel="import" href="../dev/iron-localstorage/iron-localstorage.html">
+
+<dom-module id="fc-data">
+    <template>
+        <iron-localstorage name="fc-zones-storage" on-iron-localstorage-load-empty="_zonesInit" value="{{zones}}"></iron-localstorage>
+        <iron-localstorage name="fc-keeps-storage" on-iron-localstorage-load-empty="_keepsInit" value="{{keeps}}"></iron-localstorage>
+    </template>
+    <script>
+        Polymer({
+            is: 'fc-data',
+            properties: {
+                shouts: {
+                    notify: true,
+                    type: Array
+                },
+                keeps: {
+                    notify: true,
+                    type: Array
+                },
+                zones: {
+                    notify: true,
+                    type: Array
+                },
+                rootIP: String
+            },
+            _zonesInit: function () {
+                var initdest = {
+                    host: 'TriCaster',
+                    destination: 'WebKey 07'
+                };
+                var initdestarray = [];
+                initdestarray.push(initdest);
+                this.zones = initdestarray;
+
+                var initshout = {
+                    body: 'I\'ve waited here for you. Everlong.',
+                    user: "Foo Fighters"
+                };
+                var initshoutarray = [];
+                initshoutarray.push(initshout);
+                this.shouts = initshoutarray;
+
+            },
+            _keepsInit: function () {
+                var initkeep = {
+                    body: 'Hooo boy',
+                    user: "Admin"
+                };
+                var initkeeparray = [];
+                initkeeparray.push(initkeep);
+                this.keeps = initkeeparray;
+                console.debug("KEeps", this.keeps);
+
+            },
+            attached: function () {
+                var ref = this;
+                var tc_v = "v1";
+                var myLoc = location.href.slice(0, 7);
+                var myURL = location.href.split('/');
+                ref.rootIP = (myLoc === 'file://' ? '127.0.0.1' : myURL[2]);
+
+            }
+
+        });
+    </script>
+
+</dom-module>

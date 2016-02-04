@@ -1,0 +1,87 @@
+<link rel="import" href="../dev/polymer/polymer.html">
+<link rel="import" href="../dev/paper-button/paper-button.html">
+<link rel="import" href="../dev/paper-input/paper-input.html">
+
+<dom-module id="fc-feed">
+
+    <template>
+        <paper-input id="fcFeedSource" label="RSS/Atom Path" on-keydown="_checkAdd"></paper-input>
+        <paper-input id="fcFeedNumber" label="Maximum entries" on-keydown="_checkAdd"></paper-input>
+        <paper-button on-tap="_add">Get RSS Entries</paper-button>
+    </template>
+
+
+
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'fc-feed',
+        properties: {
+            login: {
+                type: String,
+                value: 'biltrex'
+            },
+            token: {
+                type: String,
+                value: '1903ec51e80d2bc3f800c0906249ecec'
+            }
+        },
+        _checkAdd: function (e) {
+            if (e.keyCode == 13) {
+                this._add();
+            }
+        },
+        // behaviors: [TCBehaviors.Socket],
+        attached: function () {
+            // this.address = "change_notifications";
+            // this.subscribe();
+            // this._ws.onmessage = function (msg) {
+            //     console.debug("Got", msg);
+            // }
+            //
+            // console.debug("SUBSCRIBED", this);
+
+        },
+        _add: function () {
+            var ref = this;
+            $.superfeedr.options.login = ref.login;
+            $.superfeedr.options.key = ref.token;
+            var feed = new $.superfeedr.Feed(ref.$.fcFeedSource.value);
+
+            feed.load({
+                count: 10
+            }, function (result) {
+                if (!result.error) {
+                    for (var i = 0; result.feed.items.length > i; i++) {
+                        console.debug("FEED", result.feed.items[i]);
+                        var shoutdata = {
+                            user: result.feed.items[i].author,
+                            body: result.feed.items[i].content,
+                            title: result.feed.items[i].title,
+                            source: "NY Times RSS"
+                        }
+                        console.debug(shoutdata);
+                        ref.fire('add-shout', {
+                            value: shoutdata
+                        });
+                    }
+                }
+            });
+            /*
+            if (ref.$.fcShout.value && ref.$.fcUser.value) {
+                var shoutdata = {
+                    user: ref.$.fcUser.value,
+                    body: ref.$.fcShout.value
+                }
+                console.debug("Shoutdata input", shoutdata);
+                ref.fire('add-shout', {
+                    //value: this.$.fcInput.value
+                    value: shoutdata
+                });
+                ref.$.fcShout.value = null;
+            }*/
+        }
+
+    });
+</script>

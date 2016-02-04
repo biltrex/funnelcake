@@ -1,0 +1,42 @@
+<link rel="import" href="../dev/polymer/polymer.html">
+<link rel="import" href="../dev/paper-button/paper-button.html">
+<link rel="import" href="../dev/paper-input/paper-input.html">
+
+<dom-module id="fc-dropinput">
+
+    <template>
+        <paper-input id="dropHost" label="Host" on-keydown="_checkAdd"></paper-input>
+        <paper-input id="dropDest" label="Destination" on-keydown="_checkAdd"></paper-input>
+        <paper-button on-tap="_add">Add Source</paper-button>
+    </template>
+
+
+
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'fc-dropinput',
+        _checkAdd: function (e) {
+            if (e.keyCode == 13) {
+                this._add();
+            }
+        },
+
+        _add: function () {
+            if (this.$.dropHost.value && this.$.dropDest.value) {
+                var dropdata = {
+                    host: this.$.dropHost.value,
+                    destination: this.$.dropDest.value
+                }
+                this.fire('add-shout', {
+                    //value: this.$.fcInput.value
+                    value: dropdata
+                });
+                this.$.dropDest.value = null;
+            }
+        },
+
+
+    });
+</script>

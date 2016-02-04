@@ -1,0 +1,310 @@
+#thecanvas {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    /*    background-color: rgba(255, 0, 0, 0.1);*/
+    z-index: 100;
+    pointer-events: none;
+}
+
+.row-centered {
+    text-align: center;
+}
+
+.col-centered {
+    display: inline-block;
+    float: none;
+    /* reset the text-align */
+    text-align: left;
+    /* inline-block space fix */
+    margin-right: -4px;
+}
+
+.remover {
+    color: rgb(200, 200, 200);
+    float: right;
+}
+
+fc-view,
+fc-keepview {
+    z-index: 1;
+}
+
+fc-dropview {
+    z-index: 0;
+}
+
+.incoming {
+    /*    width: 40%;*/
+}
+
+.outgoing {
+    /*    width: 40%;*/
+}
+
+
+/* - List classes - */
+
+.fclist-list {
+    background-color: rgb(16, 16, 16);
+    border-color: #273669;
+    border-width: 3px;
+    border-style: solid;
+    border-radius: 4px;
+    margin: 3px;
+}
+
+.fclist-header {
+    color: white;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    background-color: #273669;
+    padding: .5em;
+}
+
+.fclist-body {}
+
+.fclist-content {
+    display: flex;
+    align-content: flex-start;
+    flex-flow: row wrap;
+    height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+/* - End List Classes - */
+
+
+/* Keep classes */
+
+.keeplist-list {
+    background-color: rgb(16, 16, 16);
+    border-color: #694027;
+    border-width: 3px;
+    border-style: solid;
+    border-radius: 4px;
+    margin: 3px;
+}
+
+.keeplist-header {
+    color: white;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    background-color: #694027;
+    padding: .5em;
+}
+
+.keeplist-list-dragin {
+    border-color: #760101;
+    transition: border-color 0.5s;
+}
+
+.keeplist-header-dragin {
+    background-color: #760101;
+    transition: background-color 0.5s;
+}
+
+.keeplist-body {}
+
+.keeplist-content {
+    display: flex;
+    align-content: flex-start;
+    flex-flow: row wrap;
+    height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+/* end keep classes */
+
+
+/* - Drop list Classes - */
+
+.droplist-list {
+    background-color: rgb(16, 16, 16);
+    border-color: #276931;
+    border-width: 3px;
+    border-style: solid;
+    border-radius: 4px;
+    margin: 3px;
+}
+
+.droplist-header {
+    color: white;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    background-color: #276931;
+    padding: .5em;
+}
+
+.droplist-body {}
+
+.droplist-content {
+    display: flex;
+    align-content: flex-start;
+    flex-flow: column;
+    height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+/* - End Drop List Classes - */
+
+
+/*  - Item classes - */
+
+.fcitem {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.fcitem-flex {
+    flex: 1 0 auto;
+}
+
+.fcitem-item {
+    margin: 3px;
+    border-style: solid;
+    border-radius: 4px;
+    border-width: 2px;
+    border-color: #2656ac;
+    background-color: rgb(32, 32, 32);
+}
+
+.fcitem-header {
+    background-color: #2656ac;
+    border-color: #2656ac;
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-width: 2px;
+    padding: 3px;
+    font-size: 1em;
+    color: white;
+    font-weight: bold;
+    
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    
+}
+
+.fcitem-footer {
+    background-color: #2656ac;
+    border-color: #2656ac;
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-width: 2px;
+    padding: 5px;
+    font-size: 1em;
+    color: white;
+    font-weight: bold;
+}
+
+.fcitem-body {
+    color: white;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-color: cornflowerblue;
+    border-width: 2px;
+    padding: 1em;
+    font-size: 1em;
+}
+
+.fcitem-title, .fcitem-user {
+    flex: 0 0 auto;
+}
+
+/* - End Item Classes - */
+
+
+/*  - Keep Item classes - */
+
+.fckeepitem {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.fckeepitem-flex {
+    flex: 1 0 auto;
+}
+
+.fckeepitem-item {
+    margin: 3px;
+    border-style: solid;
+    border-radius: 4px;
+    border-width: 2px;
+    border-color: #2656ac;
+    background-color: rgb(32, 32, 32);
+}
+
+.fckeepitem-header {
+    background-color: #2656ac;
+    border-color: #2656ac;
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-width: 2px;
+    padding: 5px;
+    font-size: 1em;
+    color: white;
+    font-weight: bold;
+}
+
+.fckeepitem-body {
+    color: white;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-color: cornflowerblue;
+    border-width: 2px;
+    padding: 1em;
+    font-size: 1em;
+}
+
+
+/* - End Keep Item Classes - */
+
+.fcdropzone-item {
+    margin: 3px;
+    border-style: solid;
+    border-radius: 4px;
+    border-width: 2px;
+    border-color: #238d33;
+    background-color: rgb(32, 32, 32);
+}
+
+.fcdropzone-header {
+    background-color: #238d33;
+    border-color: #238d33;
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-width: 2px;
+    padding: 5px;
+    font-size: 1em;
+    color: white;
+    font-weight: bold;
+}
+
+.fcdropzone-body {
+    color: white;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-color: cornflowerblue;
+    border-width: 2px;
+    padding: 1em;
+    font-size: 1em;
+}

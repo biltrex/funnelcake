@@ -1,0 +1,80 @@
+<link rel="import" href="../dev/polymer/polymer.html">
+<link rel="import" href="../dev/paper-button/paper-button.html">
+<link rel="import" href="../dev/paper-input/paper-input.html">
+
+<dom-module id="fc-bitcoin">
+
+    <!--
+<template>
+    <div>Currency is {{currency}}</div>
+    <paper-input id="curCode" label="Currency Name" on-keydown="_checkAdd"></paper-input>
+    <paper-button on-tap="_add">Change Currency</paper-button>
+</template>
+-->
+
+
+
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'fc-bitcoin',
+        currency: String,
+        curvalue: String,
+        bitcoinRef: Object,
+        litecoinRef: Object,
+        _pushData: function (source, title, value) {
+            var ref = this;
+            var shoutdata = {
+                source:  'Bitcoin Cryptocurrency',
+                user: 'Bitcoin',
+                body: value,
+                title: title
+            }
+            ref.fire('add-shout', {
+                value: shoutdata
+            });
+        },
+        _valText: function (thetype, thevalue) {
+            var capped = thetype.charAt(0).toUpperCase() + thetype.slice(1);
+            var properText = capped + " Price: " + thevalue;
+            return properText;
+        },
+        attached: function () {
+            var ref = this;
+
+            ref.bitcoinRef = new Firebase("https://publicdata-cryptocurrency.firebaseio.com/bitcoin");
+            ref.litecoinRef = new Firebase("https://publicdata-cryptocurrency.firebaseio.com/litecoin");
+
+            ref.bitcoinRef.child("ask")
+                .on("value", function (snapshot) {
+                    ref._pushData('Bitcoin', 'Ask', "Ask Price: " + snapshot.val());
+                });
+
+            ref.bitcoinRef.child("bid")
+                .on("value", function (snapshot) {
+                    ref._pushData('Bitcoin', 'Bid', "Bid Price: " + snapshot.val());
+                });
+
+            ref.bitcoinRef.child("last")
+                .on("value", function (snapshot) {
+                    ref._pushData('Bitcoin', 'Last', "Last Price: " + snapshot.val());
+                });
+
+        },
+        _checkAdd: function (e) {
+            if (e.keyCode == 13) {
+                this._add();
+            }
+        },
+        _add: function () {
+            this.curCode = this.$.curCode.value;
+        },
+        curChange: function (v) {
+
+            console.debug(v);
+        }
+
+
+    });
+</script>

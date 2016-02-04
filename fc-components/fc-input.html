@@ -1,0 +1,55 @@
+<link rel="import" href="../dev/polymer/polymer.html">
+<link rel="import" href="../dev/paper-button/paper-button.html">
+<link rel="import" href="../dev/paper-input/paper-input.html">
+
+<dom-module id="fc-input">
+
+    <template>
+        <paper-input id="fcUser" label="User Name" on-keydown="_checkAdd"></paper-input>
+        <paper-input id="fcShout" label="Shout out!" on-keydown="_checkAdd"></paper-input>
+        <paper-button on-tap="_add">Shout!</paper-button>
+    </template>
+
+
+
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'fc-input',
+        _checkAdd: function (e) {
+            if (e.keyCode == 13) {
+                this._add();
+            }
+        },
+        // behaviors: [TCBehaviors.Socket],
+        attached: function() {
+            // this.address = "change_notifications";
+            // this.subscribe();
+            // this._ws.onmessage = function(msg) {
+            //     console.debug("Got",msg);
+            // }
+            //
+            // console.debug("SUBSCRIBED", this);
+
+        },
+        _add: function () {
+            var ref = this;
+            if (ref.$.fcShout.value && ref.$.fcUser.value) {
+                var shoutdata = {
+                    user: ref.$.fcUser.value,
+                    body: ref.$.fcShout.value,
+                    source: 'Local User'
+
+                }
+                console.debug("Shoutdata input", shoutdata);
+                ref.fire('add-shout', {
+                    //value: this.$.fcInput.value
+                    value: shoutdata
+                });
+                ref.$.fcShout.value = null;
+            }
+        }
+
+    });
+</script>

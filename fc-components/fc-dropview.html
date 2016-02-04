@@ -1,0 +1,26 @@
+<link rel="import" href="fc-droplist.html">
+<link rel="import" href="fc-dropinput.html">
+
+<dom-module id="fc-dropview">
+
+    <template>
+        <fc-droplist zones="{{zones}}"></fc-droplist>
+        <fc-dropinput on-add-shout="addZone"></fc-dropinput>
+    </template>
+
+    <script>
+        var fcdropview = Polymer({
+            is: 'fc-dropview',
+            properties: {
+                zones: Array
+            },
+            addZone: function (e) {
+                this.push('zones', {
+                    host: e.detail.value.host,
+                    destination: e.detail.value.destination
+                });
+            }
+        });
+    </script>
+
+</dom-module>

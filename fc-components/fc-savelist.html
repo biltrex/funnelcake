@@ -1,0 +1,38 @@
+<link rel="import" href="../dev/polymer/polymer.html">
+<link rel="import" href="fc-keepzone.html">
+
+<dom-module id="fc-keeplist">
+
+    <template>
+
+        <div class="keeplist-list">
+            <div class="keeplist-header">Keep Drops</div>
+            <div class="keeplist-body">
+                <div class="keeplist-content">
+                    <template is="dom-repeat" items="{{keeps}}" as="keep">
+                        <fc-keepitem keep="{{keep}}" on-remove-keep="_removeKeep"></fc-keepitem>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+            is: "fc-keeplist",
+            properties: {
+                keeps: Array
+            },
+            _removeKeep: function (e) {
+                console.debug("keeplist remove", e.target.keep);
+                console.debug(this.keep);
+
+                var ind = this.keeps.indexOf(e.target.keep);
+                if (ind > -1) {
+                    this.splice('keeps', ind, 1);
+                }
+            }
+        });
+    </script>
+
+</dom-module>
