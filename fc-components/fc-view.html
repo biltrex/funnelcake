@@ -1,67 +1,69 @@
 <link rel="import" href="fc-list.html">
 <link rel="import" href="fc-input.html">
-<link rel="import" href="fc-bitcoin.html">
+<!-- <link rel="import" href="fc-bitcoin.html"> -->
+<link rel="import" href="fc-twitter.html">
 <link rel="import" href="fc-feed.html">
 
 
 <dom-module id="fc-view">
 
-    <template>
-        <fc-input on-add-shout="addShout"></fc-input>
-        <fc-feed on-add-shouts="addMultiShouts"></fc-feed>
-        <fc-list shouts="{{shouts}}"></fc-list>
+	<template>
+		<fc-twitter></fc-twitter>
+		<fc-input on-add-shout="addShout"></fc-input>
+		<fc-feed on-add-shouts="addMultiShouts"></fc-feed>
+		<fc-list shouts="{{shouts}}"></fc-list>
 
-        <fc-bitcoin on-add-shout="addShout"></fc-bitcoin>
+		<fc-bitcoin on-add-shout="addShout"></fc-bitcoin>
 
-    </template>
+	</template>
 
-    <script>
-        var fcview = Polymer({
-            is: 'fc-view',
-            properties: {
-                shouts: Array
-            },
-            addShout: function (e) {
-                console.debug(e.detail.value);
-                var ref = this;
-                if (ref.shouts !== undefined) {
-                    var checkindex = ref.shouts.indexOf(e.detail.value);
+	<script>
+		var fcview = Polymer({
+			is: 'fc-view',
+			properties: {
+				shouts: Array
+			},
+			addShout: function(e) {
+				console.debug(e.detail.value);
+				var ref = this;
+				if (ref.shouts !== undefined) {
+					var checkindex = ref.shouts.indexOf(e.detail.value);
 
-                    //Let's make sure the incoming shout doesn't already exist in the list.
-                    if (ref._containsObject(e.detail.value, ref.shouts) === false) {
-                        this.push('shouts', {
-                            body: e.detail.value.body,
-                            user: e.detail.value.user,
-                            title: e.detail.value.title,
-                            source: e.detail.value.source
-                        });
-                    }
-                } else {
-                    var newobj = {
-                        body: e.detail.value.body,
-                        user: e.detail.value.user,
-                        title: e.detail.value.title,
-                        source: e.detail.value.source
-                    }
-                    var shoutarray = [];
-                    shoutarray.push(newobj);
-                    ref.shouts = shoutarray;
-                }
-            },
-            addMultiShouts: function (e) {
-                console.debug(e.detail.value);
-            },
-            _containsObject: function (obj, list) {
-                var i;
-                for (i = 0; i < list.length; i++) {
-                    //console.debug("Checking", obj, "against", list[i]);
-                    if (list[i].body === obj.body && list[i].shout === obj.shout) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
-    </script>
+					//Let's make sure the incoming shout doesn't already exist in the list.
+					if (ref._containsObject(e.detail.value, ref.shouts) === false) {
+						this.push('shouts', {
+							body: e.detail.value.body,
+							user: e.detail.value.user,
+							title: e.detail.value.title,
+							source: e.detail.value.source
+						});
+					}
+				} else {
+					var newobj = {
+						body: e.detail.value.body,
+						user: e.detail.value.user,
+						title: e.detail.value.title,
+						source: e.detail.value.source
+					}
+					var shoutarray = [];
+					shoutarray.push(newobj);
+					ref.shouts = shoutarray;
+				}
+			},
+			addMultiShouts: function(e) {
+				console.debug(e.detail.value);
+			},
+			_containsObject: function(obj, list) {
+				var i;
+				for (i = 0; i < list.length; i++) {
+					//console.debug("Checking", obj, "against", list[i]);
+					if (list[i].body === obj.body && list[i].shout === obj.shout) {
+						return true;
+					}
+				}
+				return false;
+			}
+		});
+	</script>
 
 </dom-module>
