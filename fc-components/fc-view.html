@@ -1,6 +1,6 @@
 <link rel="import" href="fc-list.html">
 <link rel="import" href="fc-input.html">
-<!-- <link rel="import" href="fc-bitcoin.html"> -->
+<link rel="import" href="fc-bitcoin.html">
 <link rel="import" href="fc-twitter.html">
 <link rel="import" href="fc-feed.html">
 
@@ -8,13 +8,11 @@
 <dom-module id="fc-view">
 
 	<template>
-		<fc-twitter></fc-twitter>
 		<fc-input on-add-shout="addShout"></fc-input>
 		<fc-feed on-add-shouts="addMultiShouts"></fc-feed>
-		<fc-list shouts="{{shouts}}"></fc-list>
-
+		<fc-twitter on-add-shout="addShout"></fc-twitter>
 		<fc-bitcoin on-add-shout="addShout"></fc-bitcoin>
-
+		<fc-list shouts="{{shouts}}"></fc-list>
 	</template>
 
 	<script>
@@ -24,7 +22,7 @@
 				shouts: Array
 			},
 			addShout: function(e) {
-				console.debug(e.detail.value);
+				//console.debug("ADDING SHOUT HERE", e.detail.value);
 				var ref = this;
 				if (ref.shouts !== undefined) {
 					var checkindex = ref.shouts.indexOf(e.detail.value);

@@ -1,5 +1,6 @@
 <link rel="import" href="../dev/polymer/polymer.html">
 <!--<link rel="import" href="../../bower_components/paper-input/paper-input.html">-->
+<!-- user title body source -->
 
 <dom-module id="fc-keepitem">
 
@@ -22,7 +23,7 @@
             </div>
 
             <div class="fckeepitem-body">
-                {{keep.yell}}
+                {{keep.body}}
             </div>
         </div>
     </template>
@@ -37,10 +38,10 @@
                 this.fire("remove-keep");
             },
             attached: function () {
-                
+
                 var ref = this;
                 var elem = ref.$.keepbox;
-                
+
                 console.debug(elem);
 
                 function dragMove(event) {

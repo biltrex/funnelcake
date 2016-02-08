@@ -3,217 +3,135 @@
 <link rel="import" href="../dev/iron-icons/iron-icons.html">
 <link rel="import" href="../dev/paper-icon-button/paper-icon-button.html">
 <!-- <link rel="import" href="../tc-components/tc-core-behavior.html"> -->
+<!-- user title body source -->
 
 <dom-module id="fc-dropzone">
 
-    <template>
+	<template>
 
-        <style>
-            .dragover {
-                transform: scale(1.05);
-                transition: transform 0.1s;
-            }
+		<style>
+			.dragover {
+				transform: scale(1.05);
+				transition: transform 0.1s;
+			}
 
-            .bolded {
-                font-weight: bold;
-            }
-        </style>
-        <div id="dzone">
-            <div class="fcdropzone-item">
-                <div class="fcdropzone-header">
-                    <div>{{zone.host}}</div>
-                    <paper-icon-button class="remover" icon="delete" on-tap="_removeDropzone" title="remove"></paper-icon-button>
-                </div>
-                <div class="fcdropzone-body">
-                    <div>{{zone.destination}}: &nbsp {{_dropshow}} <span class="bolded">&nbsp{{_current}}&nbsp</span></div>
-                </div>
-            </div>
-        </div>
-        <canvas id="mycanvas" height="0" width="0"></canvas>
+			.bolded {
+				font-weight: bold;
+			}
+		</style>
+		<div id="dzone">
+			<div class="fcdropzone-item">
+				<div class="fcdropzone-header">
+					<div>{{zone.host}}</div>
+					<paper-icon-button class="remover" icon="delete" on-tap="_removeDropzone" title="remove"></paper-icon-button>
+				</div>
+				<div class="fcdropzone-body">
+					<div>{{zone.destination}}: &nbsp {{_dropshow}}
+						<span class="bolded">&nbsp{{_current}}&nbsp</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<canvas id="mycanvas" height="0" width="0"></canvas>
 
-    </template>
+	</template>
 
-    <script>
-        Polymer({
-            is: 'fc-dropzone',
-            properties: {
-                zone: Object,
-                _current: String,
-                _dropshow: String
-            },
-            //behaviors: [TCBehaviors.Core],
-            _removeDropzone: function () {
-                this.fire("remove-zone");
-            },
-            /**
-             * Creates and returns a blob from a data URL (either base64 encoded or not).
-             *
-             * @param {string} dataURL The data URL to convert.
-             * @return {Blob} A blob representing the array buffer data.
-             */
-            _dataURLToBlob: function (dataURL) {
-                var BASE64_MARKER = ';base64,';
-                if (dataURL.indexOf(BASE64_MARKER) == -1) {
-                    var parts = dataURL.split(',');
-                    var contentType = parts[0].split(':')[1];
-                    var raw = decodeURIComponent(parts[1]);
+	<script>
+		Polymer({
+			is: 'fc-dropzone',
+			properties: {
+				zone: Object,
+				_current: String,
+				_dropshow: String
+			},
+			//behaviors: [TCBehaviors.Core],
+			_removeDropzone: function() {
+				this.fire("remove-zone");
+			},
+			/**
+			 * Creates and returns a blob from a data URL (either base64 encoded or not).
+			 *
+			 * @param {string} dataURL The data URL to convert.
+			 * @return {Blob} A blob representing the array buffer data.
+			 */
+			_dataURLToBlob: function(dataURL) {
+				var BASE64_MARKER = ';base64,';
+				if (dataURL.indexOf(BASE64_MARKER) == -1) {
+					var parts = dataURL.split(',');
+					var contentType = parts[0].split(':')[1];
+					var raw = decodeURIComponent(parts[1]);
 
-                    return new Blob([raw], {
-                        type: contentType
-                    });
-                }
+					return new Blob([raw], {
+						type: contentType
+					});
+				}
 
-                var parts = dataURL.split(BASE64_MARKER);
-                var contentType = parts[0].split(':')[1];
-                var raw = window.atob(parts[1]);
-                var rawLength = raw.length;
+				var parts = dataURL.split(BASE64_MARKER);
+				var contentType = parts[0].split(':')[1];
+				var raw = window.atob(parts[1]);
+				var rawLength = raw.length;
 
-                var uInt8Array = new Uint8Array(rawLength);
+				var uInt8Array = new Uint8Array(rawLength);
 
-                for (var i = 0; i < rawLength; ++i) {
-                    uInt8Array[i] = raw.charCodeAt(i);
-                }
+				for (var i = 0; i < rawLength; ++i) {
+					uInt8Array[i] = raw.charCodeAt(i);
+				}
 
-                return new Blob([uInt8Array], {
-                    type: contentType
-                });
-            },
-            _escapeXML(s) {
-                if (s !== undefined) {
-                    return s.replace(/[<>&"'\r\n]/g, function (ch) {
-                        return XML_CHAR_MAP[ch];
-                    });
-                } else {
-                    return null;
-                }
-            },
-            _get_FC_Image_From_Canvas: function (thecanvas) {
-                var cd = thecanvas.toDataURL("image/png");
-                var jabba = this._dataURLToBlob(cd);
-                return jabba;
-            },
-            attached: function () {
-                var ref = this;
-                interact(ref.$.dzone)
-                    .dropzone({
-                        accept: '.fcitem',
-                        overlap: 0.15,
-                        ondropactivate: function (event) {
-                            //console.debug("activated");
-                            //console.debug("Target:", event.target);
-                            //console.debug("Related target:", event.relatedTarget);
-                        },
-                        ondrop: function (event) {
-                            var destname = ref.zone.destination.slice(0, 3);
-                            if (destname === "BFR") {
-                                var destnum = ref.zone.destination.slice(4, 5);
-                                console.debug("DESTNUM", destnum);
+				return new Blob([uInt8Array], {
+					type: contentType
+				});
+			},
+			_escapeXML(s) {
+				if (s !== undefined) {
+					return s.replace(/[<>&"'\r\n]/g, function(ch) {
+						return XML_CHAR_MAP[ch];
+					});
+				} else {
+					return null;
+				}
+			},
+			_get_FC_Image_From_Canvas: function(thecanvas) {
+				var cd = thecanvas.toDataURL("image/png");
+				var jabba = this._dataURLToBlob(cd);
+				return jabba;
+			},
+			attached: function() {
+				var ref = this;
+				interact(ref.$.dzone)
+					.dropzone({
+						accept: '.fcitem',
+						overlap: 0.15,
+						ondropactivate: function(event) {
+							//console.debug("activated");
+							//console.debug("Target:", event.target);
+							//console.debug("Related target:", event.relatedTarget);
+						},
+						ondrop: function(event) {
+							var destname = ref.zone.destination.slice(0, 3);
+							ref._current = event.relatedTarget.parentNode.shout.body;
+							//ref.sendDatalink(ref.zone.destination, event.relatedTarget.parentNode.shout.body);
+							//ref.sendDatalink("fcUser", event.relatedTarget.parentNode.shout.user);
+							event.target.classList.remove('dragover');
+							ref._dropshow = null;
+						},
+						ondragenter: function(event) {
 
-                                var mycanvas = new fabric.Canvas()
-
-                                var rect = new fabric.Rect({
-                                    left: 100,
-                                    top: 100,
-                                    fill: 'green',
-                                    width: 100,
-                                    height: 100
-                                });
-
-                                var rect2 = new fabric.Rect({
-                                    left: 300,
-                                    top: 500,
-                                    fill: 'purple',
-                                    width: 100,
-                                    height: 100
-                                });
-
-                                mycanvas.setHeight("1920");
-                                mycanvas.setWidth("1080");
-
-                                mycanvas.add(rect);
-                                mycanvas.add(rect2);
-
-                                mycanvas.renderAll();
-
-                                var canvasblob = ref._get_FC_Image_From_Canvas(mycanvas);
-
-                                var filetest = ref.sendMediaFile("bf2", "image/png", canvasblob, false).then(function (data) {
-                                    ref.sendShortcutKeys("framebuffer_preset_assign", {
-                                        'index': destnum,
-                                        'preset_index': 3,
-                                        'filename': data.responseText
-                                    });
-                                    console.debug("Promise data", data);
-                                });
-                                console.debug(filetest.state);
-
-                            } else if (destname = "IMG") {
-
-                                var XML_CHAR_MAP = {
-                                    '<': '&lt;',
-                                    '>': '&gt;',
-                                    '&': '&amp;',
-                                    '"': '&quot;',
-                                    "'": '&apos;',
-                                    '\n': "&#10;",
-                                    '\r': "&#13;"
-                                };
-                                console.debug(ref.zone.destination.slice(3));
-                                var imgKey = ref.zone.destination.slice(3);
-                                var mycanvas = new fabric.Canvas()
-
-                                var rect = new fabric.Rect({
-                                    left: 100,
-                                    top: 100,
-                                    fill: 'pink',
-                                    width: 100,
-                                    height: 100
-                                });
-
-                                var rect2 = new fabric.Rect({
-                                    left: 300,
-                                    top: 500,
-                                    fill: 'red',
-                                    width: 100,
-                                    height: 100
-                                });
-
-                                mycanvas.setHeight("1920");
-                                mycanvas.setWidth("1080");
-
-                                mycanvas.add(rect);
-                                mycanvas.add(rect2);
-
-                                mycanvas.renderAll();
-
-                                //var canvasblob = ref._get_FC_Image_From_Canvas(mycanvas);
-                                var canvasblob = mycanvas.toDataURL("image/png");
-                                ref.sendDatalink(imgKey, canvasblob);
-
-                            } else {
-                                ref._current = event.relatedTarget.parentNode.shout.body;
-                                ref.sendDatalink(ref.zone.destination, event.relatedTarget.parentNode.shout.body);
-                                ref.sendDatalink("fcUser", event.relatedTarget.parentNode.shout.user);
-                            }
-                        },
-                        ondragenter: function (event) {
-
-                            event.target.classList.add('dragover');
-                            var user = event.relatedTarget.parentNode.shout.user;
-                            var body = event.relatedTarget.parentNode.shout.body;
-                            ref._dropshow = "--> " + body;
-                            console.debug(ref.zone.destination);
-                        },
-                        ondragleave: function (event) {
-                            event.target.classList.remove('dragover');
-                            ref._dropshow = null;
-                        },
-                        ondropdeactivate: function (event) {
-                            event.target.classList.remove('dragover');
-                            ref._dropshow = null;
-                        }
-                    });
-            }
-        });
-    </script>
+							event.target.classList.add('dragover');
+							var user = event.relatedTarget.parentNode.shout.user;
+							var body = event.relatedTarget.parentNode.shout.body;
+							ref._dropshow = "--> " + body;
+							console.debug(ref.zone.destination);
+						},
+						ondragleave: function(event) {
+							event.target.classList.remove('dragover');
+							ref._dropshow = null;
+						},
+						ondropdeactivate: function(event) {
+							event.target.classList.remove('dragover');
+							ref._dropshow = null;
+						}
+					});
+			}
+		});
+	</script>
 </dom-module>

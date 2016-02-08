@@ -7,7 +7,8 @@
 	<template>
 		<h3>Twitter Feed</h3>
 		<paper-input id="fcTrack" label="Twitter Search Term" on-keydown="_checkChange"></paper-input>
-		<paper-button on-tap="_changeTerm">Shout!</paper-button>
+		<paper-button on-tap="_changeTerm">Change Twitter Term</paper-button>
+		<paper-button on-tap="_stopper">Stop</paper-button>
 	</template>
 
 
@@ -24,62 +25,42 @@
 	Polymer({
 		is: 'fc-twitter',
 		properties: {
-			twitterStream: Object,
-			twitter: Object,
 			searchTerm: String
 		},
 		_checkChange: function(e) {
-			console.log("Key hit");
+			//console.log("Key hit");
 			if (e.keyCode == 13) {
-				this._change();
+				this._changeTerm();
 			}
 		},
-		created: function() {
-			var remote = require('remote');
-			this.twitter = remote.require('twitter');
-
-		},
-		_openTwitterStream: function() {
+		attached: function() {
 			var ref = this;
-			var tttt = this.searchTerm;
-			this.twitterStream = new this.twitter({
-				consumer_key: 'jMfUHwaQXJlEUO9yr5iL2ULpL',
-				consumer_secret: 'k0mb3pNQhv1EF1abVrELlEknO1mkveKMkbhTVQi49PeeYxZ1zm',
-				access_token_key: '16248228-lX75POEti2UBms5ULjlJHIlE67CAio58bts4THxdd',
-				access_token_secret: '2QEWSyLzHQlE4WwdqR3pTMqergViJVJYKTAzDAB4k3fF2'
+			ipcRenderer = require('electron').ipcRenderer;
+			ipcRenderer.on('changeTerm', function(event, args) {
+				//console.debug("Got something!", event, args);
+				ref._add(args);
 			});
-
-			ref.twitterStream.stream('statuses/filter', {
-				track: ref.searchTerm
-			}, function(stream) {
-				stream.on('data', function(tweet) {
-					console.log(tweet.text);
-				});
-			});
-
 		},
 		_changeTerm: function() {
-			console.log("Changing term");
-			this.searchTerm = this.$.fcTrack.value;
-			this.twitterStream = null;
-			this._openTwitterStream();
+			//console.debug("Got change term in renderer", ipcRenderer);
+			ipcRenderer.send('changeTerm', this.$.fcTrack.value);
 		},
-		_add: function() {
+		_add: function(item) {
 			var ref = this;
-			if (ref.$.fcShout.value && ref.$.fcUser.value) {
+			//console.debug("ADD SHOUT", item.user, item.body);
+			if (item.user !== undefined && item.shout !== undefined) {
+				//console.debug("Making a shoutdata");
 				var shoutdata = {
-					user: ref.$.fcUser.value,
-					body: ref.$.fcShout.value,
-					source: 'Local User'
-
+					user: item.user.name,
+					body: item.shout,
+					source: 'Twitter'
 				}
-				console.debug("Shoutdata input", shoutdata);
-				ref.fire('add-shout', {
-					//value: this.$.fcInput.value
-					value: shoutdata
-				});
-				ref.$.fcShout.value = null;
-			}
+			};
+			//console.debug("Shoutdata input", shoutdata);
+			ref.fire('add-shout', {
+				//value: this.$.fcInput.value
+				value: shoutdata
+			});
 		}
 	});
 </script>
