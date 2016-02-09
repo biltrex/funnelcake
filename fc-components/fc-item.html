@@ -41,7 +41,7 @@
                 },
                 age: {
                     type: Number,
-                    value: 150000
+                    value: 15000
                 },
                 _timerfunc: Object
             },
@@ -91,6 +91,13 @@
                 }
 
                 function dragStart(event) {
+                  ref._pauseTimer();
+                  ref.$.shoutbox.style.opacity = 1;
+                  var dragpause = setTimeout(function() {
+                    ref.age = 10000;
+                    ref._startTimer();
+                  }, 10000);
+
                     var target = event.target;
 
                     target.style.webkitTransition =
@@ -125,6 +132,11 @@
                     var opac = ref.timer / ref.age;
                     ref.$.shoutbox.style.opacity = opac;
                 }, interval);
+            },
+            _pauseTimer: function() {
+              var ref = this;
+              ref.timer = ref.age;
+              clearTimeout(ref._timerfunc);
             },
             agelook: function (nv) {
                 if (nv < 0) {

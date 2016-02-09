@@ -31,6 +31,7 @@
     "paper-button": "PolymerElements/paper-button#~1.0.11",
     "paper-input": "PolymerElements/paper-input#~1.1.5",
     "interact": "~1.2.6",
-    "paper": "~0.9.25"
+    "paper": "~0.9.25",
+    "paper-drawer-panel": "PolymerElements/paper-drawer-panel#~1.0.6"
   }
 }

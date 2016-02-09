@@ -53,6 +53,5 @@
   },
   "_source": "git://github.com/paperjs/paper.js.git",
   "_target": "~0.9.25",
-  "_originalSource": "paper",
-  "_direct": true
+  "_originalSource": "paper"
 }

@@ -3,16 +3,22 @@
 <link rel="import" href="fc-bitcoin.html">
 <link rel="import" href="fc-twitter.html">
 <link rel="import" href="fc-feed.html">
+<link rel="import" href="../dev/paper-drawer-panel/paper-drawer-panel.html">
 
 
 <dom-module id="fc-view">
 
 	<template>
-		<fc-input on-add-shout="addShout"></fc-input>
-		<fc-feed on-add-shouts="addMultiShouts"></fc-feed>
-		<fc-twitter on-add-shout="addShout"></fc-twitter>
-		<fc-bitcoin on-add-shout="addShout"></fc-bitcoin>
-		<fc-list shouts="{{shouts}}"></fc-list>
+		<paper-drawer-panel>
+
+			<div id="main">
+				<fc-input on-add-shout="addShout"></fc-input>
+				<fc-feed on-add-shouts="addMultiShouts"></fc-feed>
+				<fc-twitter on-add-shout="addShout"></fc-twitter>
+				<fc-bitcoin on-add-shout="addShout"></fc-bitcoin>
+				<fc-list shouts="{{shouts}}"></fc-list>
+			</div>
+		</paper-drawer-panel>
 	</template>
 
 	<script>
