@@ -99,7 +99,7 @@
 				var ref = this;
 				interact(ref.$.dzone)
 					.dropzone({
-						accept: '.fcitem',
+						accept: '.fcitem, .fckeepitem',
 						overlap: 0.15,
 						ondropactivate: function(event) {
 							//console.debug("activated");
@@ -117,6 +117,7 @@
 						ondragenter: function(event) {
 
 							event.target.classList.add('dragover');
+							console.debug(event.relatedTarget);
 							var user = event.relatedTarget.parentNode.shout.user;
 							var body = event.relatedTarget.parentNode.shout.body;
 							ref._dropshow = "--> " + body;

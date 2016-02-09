@@ -4,106 +4,105 @@
 
 <dom-module id="fc-keepitem">
 
-    <template>
+	<template>
 
-        <style>
-            :host {
-                flex: 1 1 auto;
-                flex-direction: row;
-                z-index: 10;
-            }
-        </style>
+		<style>
+			:host {
+				flex: 1 1 auto;
+				flex-direction: row;
+				z-index: 10;
+			}
+		</style>
 
-        <div id="keepbox" class="fckeepitem fckeepitem-item">
-            <div class="fckeepitem-header">
-                <div>
-                    {{keep.user}}
-                </div>
-                <paper-icon-button class="remover" icon="delete" on-tap="_removeKeep" title="remove"></paper-icon-button>
-            </div>
+		<div id="keepbox" class="fckeepitem fckeepitem-item">
+			<div class="fckeepitem-header">
+				<div>
+					{{keep.user}}
+				</div>
+				<paper-icon-button class="remover" icon="delete" on-tap="_removeKeep" title="remove"></paper-icon-button>
+			</div>
 
-            <div class="fckeepitem-body">
-                {{keep.body}}
-            </div>
-        </div>
-    </template>
+			<div class="fckeepitem-body">
+				{{keep.body}}
+			</div>
+		</div>
+	</template>
 
-    <script>
-        Polymer({
-            is: 'fc-keepitem',
-            properties: {
-                keep: Object
-            },
-            _removeKeep: function () {
-                this.fire("remove-keep");
-            },
-            attached: function () {
+	<script>
+		Polymer({
+			is: 'fc-keepitem',
+			properties: {
+				keep: Object,
+        shout: Object  /// just here for dropzone translation
+			},
+			_removeKeep: function() {
+				this.fire("remove-keep");
+			},
+			attached: function() {
 
-                var ref = this;
-                var elem = ref.$.keepbox;
+				var ref = this;
+				var elem = ref.$.keepbox;
+				function dragMove(event) {
+					var target = event.target,
+						x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+						y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
 
-                console.debug(elem);
+					target.style.webkitTransition =
+						target.style.transition =
+						'translate 0.0s';
 
-                function dragMove(event) {
-                    var target = event.target,
-                        x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-                        y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+					target.style.webkitTransform =
+						target.style.transform =
+						'translate(' + x + 'px, ' + y + 'px) scale(1.25)';
 
-                    target.style.webkitTransition =
-                        target.style.transition =
-                        'translate 0.0s';
+					target.setAttribute('data-x', x);
+					target.setAttribute('data-y', y);
+				}
 
-                    target.style.webkitTransform =
-                        target.style.transform =
-                        'translate(' + x + 'px, ' + y + 'px) scale(1.25)';
+				function dragEnd(event) {
+					var target = event.target,
+						x = 0,
+						y = 0;
 
-                    target.setAttribute('data-x', x);
-                    target.setAttribute('data-y', y);
-                }
+					target.classList.remove('dragsizer');
 
-                function dragEnd(event) {
-                    var target = event.target,
-                        x = 0,
-                        y = 0;
+					target.setAttribute('data-x', 0);
+					target.setAttribute('data-y', 0);
 
-                    target.classList.remove('dragsizer');
-
-                    target.setAttribute('data-x', 0);
-                    target.setAttribute('data-y', 0);
-
-                    target.style.webkitTransition =
-                        target.style.transition =
-                        'transform 0.5s';
+					target.style.webkitTransition =
+						target.style.transition =
+						'transform 0.5s';
 
 
-                    target.style.webkitTransform =
-                        target.style.transform =
-                        'translate(' + x + 'px, ' + y + 'px) scale(1.0)';
-                }
+					target.style.webkitTransform =
+						target.style.transform =
+						'translate(' + x + 'px, ' + y + 'px) scale(1.0)';
+				}
 
-                function dragStart(event) {
-                    var target = event.target;
-                    console.debug(event, event.currentTarget);
+				function dragStart(event) {
+          ref.shout = ref.keep;
+          console.debug("SHOUTS", ref.keeps);
+					var target = event.target;
 
-                    target.style.webkitTransition =
-                        target.style.transition =
-                        'transform 0.1s';
+					target.style.webkitTransition =
+						target.style.transition =
+						'transform 0.1s';
 
-                    target.style.webkitTransform =
-                        target.style.transform =
-                        'scale(1.25)';
+					target.style.webkitTransform =
+						target.style.transform =
+						'scale(1.25)';
 
-                }
+				}
 
-                interact(this.$.shoutbox)
-                    .draggable({
-                        enabled: true,
-                        inertia: true,
-                        onmove: dragMove,
-                        onend: dragEnd,
-                        onstart: dragStart
-                    });
-            }
-        });
-    </script>
+				interact(this.$.keepbox)
+					.draggable({
+						enabled: true,
+						inertia: true,
+						onmove: dragMove,
+						onend: dragEnd,
+						onstart: dragStart
+					});
+			}
+		});
+	</script>
 </dom-module>
