@@ -8,17 +8,47 @@
 
 <dom-module id="fc-view">
 
-	<template>
-		<paper-drawer-panel>
+	<style>
 
-			<div id="main">
-				<fc-input on-add-shout="addShout"></fc-input>
-				<fc-feed on-add-shouts="addMultiShouts"></fc-feed>
-				<fc-twitter on-add-shout="addShout"></fc-twitter>
-				<fc-bitcoin on-add-shout="addShout"></fc-bitcoin>
-				<fc-list shouts="{{shouts}}"></fc-list>
+		.fcview-header {
+			color: white;
+			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+			font-weight: bold;
+			background-color: #273669;
+			padding: .5em;
+		}
+
+		.fcview-body {}
+
+		.fcview-main {
+			height: 500px;
+			overflow-y: auto;
+			overflow-x: hidden;
+		}
+	</style>
+
+	<template>
+
+		<div class="fcview-main">
+			<div class="fcview-header">Incoming Shouts</div>
+			<div class="fcview-body">
+				<div class="fcview-content">
+					<fc-twitter on-add-shout="addShout"></fc-twitter>
+					<fc-list shouts="{{shouts}}"></fc-list>
+
+				</div>
 			</div>
-		</paper-drawer-panel>
+		</div>
+
+		<!-- <paper-drawer-panel> -->
+
+		<!-- <div id="main"> -->
+		<!-- <fc-input on-add-shout="addShout"></fc-input>
+				<fc-feed on-add-shouts="addMultiShouts"></fc-feed> -->
+
+		<!-- </div> -->
+		<!-- <fc-bitcoin on-add-shout="addShout"></fc-bitcoin> -->
+		<!-- </paper-drawer-panel> -->
 	</template>
 
 	<script>

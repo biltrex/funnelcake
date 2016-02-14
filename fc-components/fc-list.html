@@ -3,35 +3,35 @@
 
 <dom-module id="fc-list">
 
-    <template>
-        <div class="fclist-list">
+	<template>
+		<!-- <div class="fclist-list">
             <div class="fclist-header">Incoming Shouts</div>
-            <div class="fclist-body">
-                <div class="fclist-content">
-                    <template is="dom-repeat" items="{{shouts}}" as="shout">
-                        <fc-item shout="{{shout}}" on-remove-item="_removeItem" class="fcitem-flex"></fc-item>
-                    </template>
-                </div>
-            </div>
-        </div>
-    </template>
+            <div class="fclist-body"> -->
+		<div class="fclist-content">
+			<template is="dom-repeat" items="{{shouts}}" as="shout">
+				<fc-item shout="{{shout}}" on-remove-item="_removeItem" class="fcitem-flex"></fc-item>
+			</template>
+		</div>
+		<!--</div>
+        </div> -->
+	</template>
 
-    <script>
-        Polymer({
-            is: "fc-list",
-            properties: {
-                shouts: Array
-            },
-            _removeItem: function (e) {
-                //console.debug("Item remove", e.target.shout);
-                //console.debug(this.shouts);
+	<script>
+		Polymer({
+			is: "fc-list",
+			properties: {
+				shouts: Array
+			},
+			_removeItem: function(e) {
+				//console.debug("Item remove", e.target.shout);
+				//console.debug(this.shouts);
 
-                var ind = this.shouts.indexOf(e.target.shout);
-                //console.debug("REmove index", ind);
-                if (ind > -1) {
-                    this.splice('shouts', ind, 1);
-                }
-            }
-        });
-    </script>
+				var ind = this.shouts.indexOf(e.target.shout);
+				//console.debug("REmove index", ind);
+				if (ind > -1) {
+					this.splice('shouts', ind, 1);
+				}
+			}
+		});
+	</script>
 </dom-module>

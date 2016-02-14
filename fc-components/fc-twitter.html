@@ -4,15 +4,88 @@
 
 <dom-module id="fc-twitter">
 
+	<style>
+		:host {
+			position: relative;
+			left: 0px;
+			top: 0px;
+			height: 200px;
+		}
+
+		#fcTwitBody {
+			background-color: blue;
+		}
+
+		#fcTwitHeader {
+			background-color: purple;
+			padding: .5em;
+		}
+
+		#fcTwitContent {
+			left: 20px;
+			background-color: green;
+		}
+/*
+		.twitterMain {
+			overflow: hidden;
+			width: 500px;
+		}
+
+		.twitterBox {
+			position: relative;
+			margin-left: 20px;
+		}
+
+		.fc-input-component-main {
+			background-color: blue;
+			width: 400px;
+			height: 200px;
+			transition: height 0.5s ease, width 0.5s ease;
+		}
+
+		* {
+			background-color: blue;
+			overflow: hidden;
+		}
+
+		.mainRetracted {
+			width: 20px;
+			height: 20px;
+			font-size: 0em;
+			transition: height 0.25s ease, width 0.25s ease;
+		}
+
+		.boxRetracted {
+			width: 00px;
+			height: 00px;
+			font-size: 0em;
+			transition: height 0.25s ease, width 0.25s ease;
+		}*/
+	</style>
+
 	<template>
-		<h3>Twitter Feed</h3>
-		<paper-input id="fcTrack" label="Twitter Search Term" on-keydown="_checkChange"></paper-input>
-		<paper-button on-tap="_changeTerm">Change Twitter Term</paper-button>
-		<paper-button on-tap="_stopper">Stop</paper-button>
+
+		<div id="fcTwitBody">
+			<div id=fcTwitHeader>Twitter
+			</div>
+			<div id="fcTwitContent">
+				<paper-input id="fcTrack" label="Twitter Search Term" on-keydown="_checkChange"></paper-input>
+				<paper-button on-tap="_changeTerm">Change Twitter Term</paper-button>
+				<paper-button on-tap="_stopper">Stop</paper-button>
+			</div>
+		</div>
+
+
+
+		<!-- <div class="twitteMain fc-input-component-main">
+			<!-- <h4 class="twitHead">{{label}}</h4> -->
+		<!-- <div class="twitterBox">
+				<paper-input id="fcTrack" label="Twitter Search Term" on-keydown="_checkChange"></paper-input>
+				<paper-button on-tap="_changeTerm">Change Twitter Term</paper-button>
+				<paper-button on-tap="_stopper">Stop</paper-button>
+			</div>
+		</div> -->-->
 	</template>
-
-
-
 </dom-module>
 
 <script>
@@ -25,7 +98,19 @@
 	Polymer({
 		is: 'fc-twitter',
 		properties: {
-			searchTerm: String
+			searchTerm: String,
+			label: {
+				type: String,
+				value: "Twitter"
+			},
+			shortLabel: {
+				type: String,
+				value: "T"
+			},
+			longLabel: {
+				type: String,
+				value: "Twitter Feed"
+			}
 		},
 		_checkChange: function(e) {
 			//console.log("Key hit");
@@ -40,6 +125,18 @@
 				//console.debug("Got something!", event, args);
 				ref._add(args);
 			});
+
+			//console.debug("HWELKRJE:KLREJ:R",ref.$.twitterMain);
+			setInterval(function() {
+				// ref.$.twitterMain.classList.add("mainRetracted");
+				// ref.$.twitterBox.classList.add("boxRetracted");
+			}, 2000);
+			// ref.label = ref.shortLabel;
+			setInterval(function() {
+				// ref.$.twitterMain.classList.remove("mainRetracted");
+				// ref.$.twitterBox.classList.remove("boxRetracted");
+				// ref.label = ref.longLabel;
+			}, 4000);
 		},
 		_changeTerm: function() {
 			//console.debug("Got change term in renderer", ipcRenderer);
